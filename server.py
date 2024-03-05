@@ -7,19 +7,19 @@ def start_server(host, port):
 
     print(f"Running at: {host}:{port}")
 
-    client_socket, client_address = server_socket.accept()
-    print(f"Client [{client_address}] connected")
+    while True:  # Keep Alive
+        client_socket, client_address = server_socket.accept()
+        print(f"Client [{client_address}] connected")
 
-    # Receive File
-    received_file = open("recv_file.txt", "wb")
-    data = client_socket.recv(1024)
-    while data:
-        received_file.write(data)
+        # Receive File
+        received_file = open("recv_file.txt", "wb")  # currently not dynamic
         data = client_socket.recv(1024)
+        while data:
+            received_file.write(data)
+            data = client_socket.recv(1024)
 
-    received_file.close()
-    client_socket.close()
-    server_socket.close()
+        received_file.close()
+        client_socket.close()  # to keep the one client slot free
 
 if __name__ == "__main__":
     server_host = "127.0.0.1"
