@@ -4,7 +4,11 @@ import os
 recv_path = os.path.curdir
 
 class recv_folder:
+    global recv_path
+    
     def creat(name: str = "received") -> bool:
+        global recv_path
+        
         desktop_path = os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop')
         if os.path.exists(os.path.join(desktop_path, name)):
            return False
@@ -26,6 +30,7 @@ class recv_folder:
             return False
 
     def check(name: str = "received") -> bool:
+        global recv_path
         desktop_path = os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop', name)
         if os.path.exists(desktop_path):
             recv_path = desktop_path
@@ -33,18 +38,22 @@ class recv_folder:
         return False
 
 def start_server(host, port):
+    global recv_path
+    
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind((host, port))
     server_socket.listen(1)
 
     print(f"Running at: {host}:{port}")
 
+    print(recv_path)
+
     while True:  # Keep Alive
         client_socket, client_address = server_socket.accept()
         print(f"Client [{client_address}] connected")
 
         # Receive File
-        received_file = open(recv_path + "recv_file.txt", "wb")  # currently not dynamic
+        received_file = open(os.path.join(recv_path, "recv_file.txt"), "wb")  # currently not dynamic
         data = client_socket.recv(1024)
         while data:
             received_file.write(data)
