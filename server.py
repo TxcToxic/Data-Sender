@@ -11,15 +11,15 @@ class recv_folder:
         try:
             os.mkdir(os.path.join(desktop_path, name))
             
-            with open("readme.txt", "w") as rmtxt:
+            recv_path = os.path.join(desktop_path, name)
+            
+            with open(os.path.join(desktop_path, name, "readme.txt"), "w") as rmtxt:
                 rmtxt.write("!> PLEASE DO NOT REMOVE THIS DIRECTORY <!\n")
                 rmtxt.write("this directory was created by data_socket\n\n")
                 rmtxt.write("!> You have to create 2 Firewall rules\n")
                 rmtxt.write("press win + r then type \"wf.msc\"\n")
                 rmtxt.write("now create an in- & outbound rule and allow tcp port 6767")
                 rmtxt.close()
-            
-            recv_path = os.path.join(desktop_path, name)
             
             return True
         except:
